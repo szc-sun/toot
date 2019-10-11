@@ -25,18 +25,37 @@ export default {
     this.$nextTick(function () {
       _this.geEcharts()
     })
-    this.refInOut = window.setInterval(_this.show('a', 2), 5000)
+    // _this.show('a', 2)
+    this.refInOut = window.setTimeout(function () {
+      _this.show('a', 2)
+    }, 5000)
+    window.setTimeout(function () {
+      _this.geEcharts()
+    }, 10000)
+    // this.refInOut = window.setInterval(_this.show('a', 2), 5000)
+    // this.refInOut = window.setTimeout(_this.geEcharts(), 10000)
   },
   beforeDestroy () {
     clearInterval(this.refInOut)
     this.refInOut = null
   },
   methods: {
-    geEcharts () {
+    geEcharts (showData) {
       var data = [
         {
           name: '海门',
-          value: 9
+          value: {
+            name: '医院名称',
+            number: 9876,
+            in: {
+              number: 7000,
+              type: '唾液'
+            },
+            out: {
+              number: 2876,
+              type: '唾液'
+            }
+          }
         },
         {
           name: '鄂尔多斯',
@@ -1001,7 +1020,161 @@ export default {
         }
         return res
       }
+      var series = []
+      series = [
 
+        {
+          name: '城市',
+          type: 'scatter',
+          coordinateSystem: 'geo',
+          data: convertData(data),
+          symbolSize: function (val) {
+            return val[2] / 20
+          },
+          label: {
+            normal: {
+              formatter: function (params) {
+                // console.log(params.data.value)
+                let res = '{fline|样本数量：' + params.data.value[2] + '  ' + params.data.value[2] + '}\n{tline|' + params.data.value[2] + '}'
+                return res
+              },
+              position: 'top',
+              backgroundColor: 'rgba(8,186,236,.9)',
+              padding: [0, 0],
+              borderRadius: 3,
+              lineHeight: 32,
+              color: '#ffffff',
+              rich: {
+                fline: {
+                  padding: [0, 10, 10, 10],
+                  color: '#ffffff',
+                  fontSize: '16'
+                },
+                tline: {
+                  padding: [10, 10, 0, 10],
+                  color: '#ffffff'
+                }
+              },
+              show: false
+            },
+            emphasis: {
+              show: true
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: '#ddb926'
+            }
+          }
+        },
+        {
+          name: '前5',
+          label: {
+            normal: {
+              formatter: function (params) {
+                return '{fline|客户：' + params.data.username + '  ' + params.data.telphone + '}\n{tline|' + params.data.address + '}'
+              },
+              position: 'top',
+              backgroundColor: 'rgba(254,174,33,.8)',
+              padding: [0, 0],
+              borderRadius: 3,
+              lineHeight: 32,
+              color: '#f7fafb',
+              rich: {
+                fline: {
+                  padding: [0, 10, 10, 10],
+                  color: '#ffffff'
+                },
+                tline: {
+                  padding: [10, 10, 0, 10],
+                  color: '#ffffff'
+                }
+              }
+            },
+            emphasis: {
+              show: true
+            }
+          },
+          type: 'effectScatter',
+          coordinateSystem: 'geo',
+          data: convertData(data.sort(function (a, b) {
+            return b.value - a.value
+          }).slice(0, 9)),
+          symbolSize: function (val) {
+            return val[2] / 20
+          },
+          showEffectOn: 'render',
+          rippleEffect: {
+            brushType: 'stroke'
+          },
+          hoverAnimation: true,
+          // label: {
+          //     normal: {
+          //         formatter: '{b}',
+          //         position: 'right',
+          //         show: true
+          //     }
+          // },
+          itemStyle: {
+            normal: {
+              color: '#f4e925',
+              shadowBlur: 10,
+              shadowColor: '#333'
+            }
+          },
+          zlevel: 1
+        }
+      ]
+      // console.log(111, convertData(data))
+      if (showData) {
+        console.log(111, showData, convertData(data))
+        series.push(
+          {
+            name: '城市',
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            data: showData,
+            symbolSize: function (val) {
+              return val[2] / 20
+            },
+            label: {
+              normal: {
+                formatter: function (params) {
+                  console.log(params.data.value)
+                  let res = '{fline|样本数量：' + params.data.value[2] + '  ' + params.data.value[2] + '}\n{tline|' + params.data.value[2] + '}'
+                  return res
+                },
+                position: 'top',
+                backgroundColor: 'rgba(8,186,236,.9)',
+                padding: [0, 0],
+                borderRadius: 3,
+                lineHeight: 32,
+                color: '#ffffff',
+                rich: {
+                  fline: {
+                    padding: [0, 10, 10, 10],
+                    color: '#ffffff',
+                    fontSize: '16'
+                  },
+                  tline: {
+                    padding: [10, 10, 0, 10],
+                    color: '#ffffff'
+                  }
+                },
+                show: true
+              },
+              emphasis: {
+                show: true
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: '#ddb926'
+              }
+            }
+          }
+        )
+      }
       var option = {
         legend: {
           left: 'left',
@@ -1028,109 +1201,27 @@ export default {
             }
           }
         },
-        series: [
-
-          {
-            name: '城市',
-            type: 'scatter',
-            coordinateSystem: 'geo',
-            data: convertData(data),
-            symbolSize: function (val) {
-              return val[2] / 20
-            },
-            label: {
-              normal: {
-                formatter: function (params) {
-                  // console.log(123)
-                  return '123'
-                },
-                position: 'right',
-                show: false
-              },
-              emphasis: {
-                show: true
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: '#ddb926'
-              }
-            }
-          },
-          {
-            name: '前5',
-            label: {
-              normal: {
-                formatter: function (params) {
-                  return '{fline|客户：' + params.data.username + '  ' + params.data.telphone + '}\n{tline|' + params.data.address + '}'
-                },
-                position: 'top',
-                backgroundColor: 'rgba(254,174,33,.8)',
-                padding: [0, 0],
-                borderRadius: 3,
-                lineHeight: 32,
-                color: '#f7fafb',
-                rich: {
-                  fline: {
-                    padding: [0, 10, 10, 10],
-                    color: '#ffffff'
-                  },
-                  tline: {
-                    padding: [10, 10, 0, 10],
-                    color: '#ffffff'
-                  }
-                }
-              },
-              emphasis: {
-                show: true
-              }
-            },
-            type: 'effectScatter',
-            coordinateSystem: 'geo',
-            data: convertData(data.sort(function (a, b) {
-              return b.value - a.value
-            }).slice(0, 9)),
-            symbolSize: function (val) {
-              return val[2] / 20
-            },
-            showEffectOn: 'render',
-            rippleEffect: {
-              brushType: 'stroke'
-            },
-            hoverAnimation: true,
-            // label: {
-            //     normal: {
-            //         formatter: '{b}',
-            //         position: 'right',
-            //         show: true
-            //     }
-            // },
-            itemStyle: {
-              normal: {
-                color: '#f4e925',
-                shadowBlur: 10,
-                shadowColor: '#333'
-              }
-            },
-            zlevel: 1
-          }
-        ]
+        series: series
       }
+      console.log(222, series)
       const mycharts = this.$echarts.init(document.getElementById('mycharts'))
-      mycharts.setOption(option)
+      mycharts.setOption(option, true)
     },
     show (item, index) {
       // debugger
       // let myChartpie = this.$echarts.init(document.getElementById('myCharts'))
-      const mycharts = this.$echarts.init(document.getElementById('mycharts'))
+      // const mycharts = this.$echarts.init(document.getElementById('mycharts'))
+      var showData = [{ name: '北京', value: [116.46, 39.92, { name: '北京', number: 888 }] }]
+      var _this = this
       this.$nextTick(function () {
         console.log(123)
-        mycharts.dispatchAction({
-          type: 'showTip',
-          seriesIndex: 2, // 第几条series
-          dataIndex: 2 // 第几个tooltip
-          // name: item.province
-        })
+        _this.geEcharts(showData)
+        // mycharts.dispatchAction({
+        //   type: 'showTip',
+        //   seriesIndex: 2, // 第几条series
+        //   dataIndex: 2 // 第几个tooltip
+        //   // name: item.province
+        // })
       })
       // const sampleResourceMonitor = this.$echarts.init(document.getElementById('sampleResourceMonitor'))
       // sampleResourceMonitor.dispatchAction({
