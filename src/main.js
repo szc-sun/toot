@@ -5,6 +5,10 @@ import store from './store'
 import './registerServiceWorker'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import echarts from 'echarts' // 引入echarts
+import 'echarts/extension/bmap/bmap.js'
+import 'echarts/echarts.common.js'
+Vue.prototype.$echarts = echarts // 引入组件
 
 Vue.use(ElementUI)
 
