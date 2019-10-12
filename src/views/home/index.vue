@@ -6,9 +6,48 @@
  */
  <template>
  <div class="home">
-   首页
-   <el-button type="primary">首页</el-button>
-   <div id="mycharts"></div>
+   <div class="test-box">
+     <div class="left-bottom left-box">
+      <div id="inOutBox" class="left-bottom-list-box">
+        <div v-for="(item,index) in inOutWarehouse" :key="index">
+          <div v-if="item.value.in.number > 0" @click="activeItem(item,index)" :class="{'left-bottom-list':true}">
+            <div class="left-img">
+              <!-- <svg-icon :icon-class="item.state ==='in' ? 'ruku' : 'chuku'" class="left-img-svg" /> -->
+            </div>
+            <div class="right-con">
+              <div class="right-con-one">
+                {{ item.value.in.type }}样本 {{ item.value.name }}单位
+              </div>
+              <div class="right-con-two">
+                入库 {{ item.value.in.number }}份样本
+              </div>
+              <div class="right-con-three">
+                {{ item.value.in.time }}
+              </div>
+            </div>
+          </div>
+          <div v-if="item.value.out.number > 0" @click="activeItem(item,index)"  :class="{'left-bottom-list':true}">
+            <div class="left-img">
+              <!-- <svg-icon :icon-class="item.state ==='in' ? 'ruku' : 'chuku'" class="left-img-svg" /> -->
+            </div>
+            <div class="right-con">
+              <div class="right-con-one">
+                {{ item.value.out.type }}样本 {{ item.value.name }}单位
+              </div>
+              <div class="right-con-two">
+                出库 {{ item.value.out.number }}份样本
+              </div>
+              <div class="right-con-three">
+                {{ item.value.out.time }}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+     <div id="mycharts" @mouseenter="geEcharts()"></div>
+   </div>
  </div>
  </template>
 <script>
@@ -16,805 +55,429 @@ import 'echarts/map/js/china.js'
 export default {
   data () {
     return {
-      refInOut: null // 计时器
-    }
-  },
-  mounted () {
-    var _this = this
-    // var index = 0
-    this.$nextTick(function () {
-      _this.geEcharts()
-    })
-    // _this.show('a', 2)
-    this.refInOut = window.setTimeout(function () {
-      _this.show('a', 2)
-    }, 5000)
-    window.setTimeout(function () {
-      _this.geEcharts()
-    }, 10000)
-    // this.refInOut = window.setInterval(_this.show('a', 2), 5000)
-    // this.refInOut = window.setTimeout(_this.geEcharts(), 10000)
-  },
-  beforeDestroy () {
-    clearInterval(this.refInOut)
-    this.refInOut = null
-  },
-  methods: {
-    geEcharts (showData) {
-      var data = [
+      // refInOut: null, // 计时器
+      inOutWarehouse: [
         {
-          name: '海门',
+          name: '广州市天河区',
           value: {
-            name: '医院名称',
-            number: 9876,
-            in: {
-              number: 7000,
-              type: '唾液'
-            },
+            name: '南方医学大学附属第三医院器官衰竭中心',
+            number: 5000,
+
             out: {
-              number: 2876,
-              type: '唾液'
+              type: '血液',
+              number: 5000,
+              time: '2019-8-12',
+              state: 'out'
+            },
+            in: {
+              type: '血液',
+              number: '',
+              time: '2019-8-12',
+              state: 'in'
             }
           }
         },
         {
-          name: '鄂尔多斯',
-          value: 12
-        },
-        {
-          name: '招远',
-          value: 12
-        },
-        {
-          name: '舟山',
-          value: 12
-        },
-        {
-          name: '齐齐哈尔',
-          value: 14
-        },
-        {
-          name: '盐城',
-          value: 15
-        },
-        {
-          name: '赤峰',
-          value: 16
-        },
-        {
-          name: '青岛',
-          value: 18
-        },
-        {
-          name: '乳山',
-          value: 18
-        },
-        {
-          name: '金昌',
-          value: 19
-        },
-        {
-          name: '泉州',
-          value: 21
-        },
-        {
-          name: '莱西',
-          value: 21
-        },
-        {
-          name: '日照',
-          value: 21
-        },
-        {
-          name: '胶南',
-          value: 22
-        },
-        {
-          name: '南通',
-          value: 23
-        },
-        {
-          name: '拉萨',
-          value: 24
-        },
-        {
-          name: '云浮',
-          value: 24
-        },
-        {
-          name: '梅州',
-          value: 25
-        },
-        {
-          name: '文登',
-          value: 25
-        },
-        {
-          name: '上海',
-          value: 25
-        },
-        {
-          name: '攀枝花',
-          value: 25
-        },
-        {
-          name: '威海',
-          value: 25
-        },
-        {
-          name: '承德',
-          value: 25
-        },
-        {
-          name: '厦门',
-          value: 26
-        },
-        {
-          name: '汕尾',
-          value: 26
-        },
-        {
-          name: '潮州',
-          value: 26
-        },
-        {
-          name: '丹东',
-          value: 27
-        },
-        {
-          name: '太仓',
-          value: 27
-        },
-        {
-          name: '曲靖',
-          value: 27
-        },
-        {
-          name: '烟台',
-          value: 28
-        },
-        {
-          name: '福州',
-          value: 29
-        },
-        {
-          name: '瓦房店',
-          value: 30
-        },
-        {
-          name: '即墨',
-          value: 30
-        },
-        {
-          name: '抚顺',
-          value: 31
-        },
-        {
-          name: '玉溪',
-          value: 31
-        },
-        {
-          name: '张家口',
-          value: 31
-        },
-        {
-          name: '阳泉',
-          value: 31
-        },
-        {
-          name: '莱州',
-          value: 32
-        },
-        {
-          name: '湖州',
-          value: 32
-        },
-        {
-          name: '汕头',
-          value: 32
-        },
-        {
-          name: '昆山',
-          value: 33
-        },
-        {
-          name: '宁波',
-          value: 33
-        },
-        {
-          name: '湛江',
-          value: 33
-        },
-        {
-          name: '揭阳',
-          value: 34
-        },
-        {
-          name: '荣成',
-          value: 34
-        },
-        {
-          name: '连云港',
-          value: 35
-        },
-        {
-          name: '葫芦岛',
-          value: 35
-        },
-        {
-          name: '常熟',
-          value: 36
-        },
-        {
-          name: '东莞',
-          value: 36
-        },
-        {
-          name: '河源',
-          value: 36
-        },
-        {
-          name: '淮安',
-          value: 36
-        },
-        {
-          name: '泰州',
-          value: 36
-        },
-        {
-          name: '南宁',
-          value: 37
-        },
-        {
-          name: '营口',
-          value: 37
-        },
-        {
-          name: '惠州',
-          value: 37
-        },
-        {
-          name: '江阴',
-          value: 37
-        },
-        {
-          name: '蓬莱',
-          value: 37
-        },
-        {
-          name: '韶关',
-          value: 38
-        },
-        {
-          name: '嘉峪关',
-          value: 38
-        },
-        {
-          name: '广州',
-          value: 228
-        },
-        {
-          name: '延安',
-          value: 38
-        },
-        {
-          name: '太原',
-          value: 39
-        },
-        {
-          name: '清远',
-          value: 39
-        },
-        {
-          name: '中山',
-          value: 39
-        },
-        {
-          name: '昆明',
-          value: 39
-        },
-        {
-          name: '寿光',
-          value: 40
-        },
-        {
-          name: '盘锦',
-          value: 40
-        },
-        {
-          name: '长治',
-          value: 41
-        },
-        {
-          name: '深圳',
-          value: 41
-        },
-        {
-          name: '珠海',
-          value: 273
-        },
-        {
-          name: '宿迁',
-          value: 43
-        },
-        {
-          name: '咸阳',
-          value: 43
-        },
-        {
-          name: '铜川',
-          value: 44
-        },
-        {
-          name: '平度',
-          value: 44
-        },
-        {
-          name: '佛山',
-          value: 44
-        },
-        {
-          name: '海口',
-          value: 44
-        },
-        {
-          name: '江门',
-          value: 45
-        },
-        {
-          name: '章丘',
-          value: 45
-        },
-        {
-          name: '肇庆',
-          value: 46
-        },
-        {
-          name: '大连',
-          value: 47
-        },
-        {
-          name: '临汾',
-          value: 47
-        },
-        {
-          name: '吴江',
-          value: 47
-        },
-        {
-          name: '石嘴山',
-          value: 49
-        },
-        {
-          name: '沈阳',
-          value: 50
-        },
-        {
-          name: '苏州',
-          value: 50
-        },
-        {
-          name: '茂名',
-          value: 50
-        },
-        {
-          name: '嘉兴',
-          value: 51
-        },
-        {
-          name: '长春',
-          value: 51
-        },
-        {
-          name: '胶州',
-          value: 52
-        },
-        {
-          name: '银川',
-          value: 52
-        },
-        {
-          name: '张家港',
-          value: 52
-        },
-        {
-          name: '三门峡',
-          value: 53
-        },
-        {
-          name: '锦州',
-          value: 54
-        },
-        {
-          name: '南昌',
-          value: 54
-        },
-        {
-          name: '柳州',
-          value: 54
-        },
-        {
-          name: '三亚',
-          value: 54
-        },
-        {
-          name: '自贡',
-          value: 56
-        },
-        {
-          name: '吉林',
-          value: 56
-        },
-        {
-          name: '阳江',
-          value: 57
-        },
-        {
-          name: '泸州',
-          value: 57
-        },
-        {
-          name: '西宁',
-          value: 57
-        },
-        {
-          name: '宜宾',
-          value: 58
-        },
-        {
-          name: '呼和浩特',
-          value: 58
-        },
-        {
-          name: '成都',
-          value: 58
-        },
-        {
-          name: '大同',
-          value: 58
-        },
-        {
-          name: '镇江',
-          value: 59
-        },
-        {
-          name: '桂林',
-          value: 59
-        },
-        {
-          name: '张家界',
-          value: 59
-        },
-        {
-          name: '宜兴',
-          value: 59
-        },
-        {
-          name: '北海',
-          value: 60
-        },
-        {
-          name: '西安',
-          value: 61
-        },
-        {
-          name: '金坛',
-          value: 62
-        },
-        {
-          name: '东营',
-          value: 62
-        },
-        {
-          name: '牡丹江',
-          value: 63
-        },
-        {
-          name: '遵义',
-          value: 63
-        },
-        {
-          name: '绍兴',
-          value: 63
-        },
-        {
-          name: '扬州',
-          value: 64
-        },
-        {
-          name: '常州',
-          value: 64
-        },
-        {
-          name: '潍坊',
-          value: 65
-        },
-        {
-          name: '重庆',
-          value: 66
-        },
-        {
-          name: '台州',
-          value: 67
-        },
-        {
-          name: '南京',
-          value: 67
-        },
-        {
-          name: '滨州',
-          value: 70
-        },
-        {
-          name: '贵阳',
-          value: 71
-        },
-        {
-          name: '无锡',
-          value: 71
-        },
-        {
-          name: '本溪',
-          value: 71
-        },
-        {
-          name: '克拉玛依',
-          value: 72
-        },
-        {
-          name: '渭南',
-          value: 72
-        },
-        {
-          name: '马鞍山',
-          value: 72
-        },
-        {
-          name: '宝鸡',
-          value: 72
-        },
-        {
-          name: '焦作',
-          value: 75
-        },
-        {
-          name: '句容',
-          value: 75
-        },
-        {
-          name: '北京',
-          value: 79
-        },
-        {
-          name: '徐州',
-          value: 79
-        },
-        {
-          name: '衡水',
-          value: 80
-        },
-        {
-          name: '包头',
-          value: 80
-        },
-        {
-          name: '绵阳',
-          value: 80
-        },
-        {
-          name: '乌鲁木齐',
-          value: 94
-        },
-        {
-          name: '枣庄',
-          value: 84
-        },
-        {
-          name: '杭州',
-          value: 84
-        },
-        {
-          name: '淄博',
-          value: 85
-        },
-        {
-          name: '鞍山',
-          value: 86
-        },
-        {
-          name: '溧阳',
-          value: 86
-        },
-        {
-          name: '库尔勒',
-          value: 86
-        },
-        {
-          name: '安阳',
-          value: 90
-        },
-        {
-          name: '开封',
-          value: 90
-        },
-        {
-          name: '济南',
-          value: 92
-        },
-        {
-          name: '德阳',
-          value: 93
-        },
-        {
-          name: '温州',
-          value: 95
-        },
-        {
-          name: '九江',
-          value: 96
-        },
-        {
-          name: '邯郸',
-          value: 98
-        },
-        {
-          name: '临安',
-          value: 99
-        },
-        {
-          name: '兰州',
-          value: 99
-        },
-        {
-          name: '沧州',
-          value: 100
-        },
-        {
-          name: '临沂',
-          value: 103
-        },
-        {
-          name: '南充',
-          value: 104
-        },
-        {
-          name: '天津',
-          value: 105
-        },
-        {
-          name: '富阳',
-          value: 106
-        },
-        {
-          name: '泰安',
-          value: 112
-        },
-        {
-          name: '诸暨',
-          value: 112
-        },
-        {
-          name: '郑州',
-          value: 113
-        },
-        {
-          name: '哈尔滨',
-          value: 114
-        },
-        {
-          name: '聊城',
-          value: 116
-        },
-        {
-          name: '芜湖',
-          value: 117
-        },
-        {
-          name: '唐山',
-          value: 119
-        },
-        {
-          name: '平顶山',
-          value: 119
-        },
-        {
-          name: '邢台',
-          value: 119
-        },
-        {
-          name: '德州',
-          value: 120
-        },
-        {
-          name: '济宁',
-          value: 120
-        },
-        {
-          name: '荆州',
-          value: 127
-        },
-        {
-          name: '宜昌',
-          value: 130
-        },
-        {
-          name: '义乌',
-          value: 132
-        },
-        {
-          name: '丽水',
-          value: 133
-        },
-        {
-          name: '洛阳',
-          value: 134
-        },
-        {
-          name: '秦皇岛',
-          value: 136
-        },
-        {
-          name: '株洲',
-          value: 143
-        },
-        {
-          name: '石家庄',
-          value: 147
-        },
-        {
-          name: '莱芜',
-          value: 148
-        },
-        {
-          name: '常德',
-          value: 152
-        },
-        {
-          name: '保定',
-          value: 153
-        },
-        {
-          name: '湘潭',
-          value: 154
-        },
-        {
-          name: '金华',
-          value: 57
-        },
-        {
-          name: '岳阳',
-          value: 19
-        },
-        {
-          name: '长沙',
-          value: 175
-        },
-        {
-          name: '衢州',
-          value: 177
-        },
-        {
-          name: '廊坊',
-          value: 23
-        },
-        {
-          name: '菏泽',
-          value: 44
-        },
-        {
-          name: '合肥',
-          value: 119
-        },
-        {
-          name: '武汉',
-          value: 0
-        },
-        {
-          name: '大庆',
-          value: 0
+          name: '广州市从化区',
+          value: {
+            name: '南方医科大学附属南方医院',
+            number: '3500',
+            out: {
+              type: '组织',
+              number: 0,
+              time: '2019-8-16'
+            },
+            in: {
+              type: '组织',
+              number: '3500',
+              time: '2019-8-16'
+            }
+          }
+        },
+        {
+          name: '广州市海珠区',
+          value: {
+            name: '南方医科发现中西医结合医院',
+            number: '3200',
+            out: {
+              type: '全血',
+              number: '3200',
+              time: '2019-9-10',
+              state: 'out'
+            },
+            in: {
+              type: '全血',
+              number: 0,
+              time: '2019-9-10',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '南京市玄武区',
+          value: {
+            name: '南京口腔医院',
+            number: '3266',
+            out: {
+              type: '尿液',
+              number: '3266',
+              time: '2019-8-16',
+              state: 'out'
+            },
+            in: {
+              type: '尿液',
+              number: 0,
+              time: '2019-8-16',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '呼和浩特市赛罕区',
+          value: {
+            name: '内蒙古肿瘤医院',
+            number: '1288',
+            out: {
+              type: '血清',
+              number: '1288',
+              time: '2019-8-25',
+              state: 'out'
+            },
+            in: {
+              type: '血清',
+              number: 0,
+              time: '2019-8-25',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '宁波市海曙区',
+          value: {
+            name: '宁波第二人民医院',
+            number: '3268',
+            out: {
+              type: '血液',
+              number: 0,
+              time: '2019-6-8',
+              state: 'out'
+            },
+            in: {
+              type: '血液',
+              number: '3268',
+              time: '2019-6-8',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '济南市历下区',
+          value: {
+            name: '山东大学齐鲁医院',
+            number: '6211',
+            out: {
+              type: '组织',
+              number: 0,
+              time: '2019-7-9',
+              state: 'out'
+            },
+            in: {
+              type: '组织',
+              number: '6211',
+              time: '2019-7-9',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '济南市历下区龙洞街道',
+          value: {
+            name: '山东省立医院东院',
+            number: '2625',
+            out: {
+              type: '细胞',
+              number: '2625',
+              time: '2019-8-15',
+              state: 'out'
+            },
+            in: {
+              type: '细胞',
+              number: 0,
+              time: '2019-8-15',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '济南市槐荫区',
+          value: {
+            name: '山东省立医院内分泌',
+            number: '1326',
+            out: {
+              type: '唾液',
+              number: '1326',
+              time: '2019-7-7',
+              state: 'out'
+            },
+            in: {
+              type: '唾液',
+              number: 0,
+              time: '2019-7-7',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '济南市历下区趵突泉街道',
+          value: {
+            name: '山东省医学科学院内分泌研究所',
+            number: '1088',
+            out: {
+              type: '痰液',
+              number: '1088',
+              time: '2019-5-15',
+              state: 'out'
+            },
+            in: {
+              type: '痰液',
+              number: 0,
+              time: '2019-5-15',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '上海市徐汇区',
+          value: {
+            name: '上海第六人民医院',
+            number: '2367',
+            out: {
+              type: '细胞',
+              number: 0,
+              time: '2019-5-20',
+              state: 'out'
+            },
+            in: {
+              type: '细胞',
+              number: '2367',
+              time: '2019-5-20',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '上海市长宁区',
+          value: {
+            name: '上海皮肤病医院',
+            number: '1688',
+            out: {
+              type: '皮肤鳞屑',
+              number: 0,
+              time: '2019-6-12',
+              state: 'out'
+            },
+            in: {
+              type: '皮肤鳞屑',
+              number: '1688',
+              time: '2019-6-12',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '上海市杨浦区',
+          value: {
+            name: '上海新华医院',
+            number: '5211',
+            out: {
+              type: '全血',
+              number: '5211',
+              time: '2019-8-10',
+              state: 'out'
+            },
+            in: {
+              type: '全血',
+              number: 0,
+              time: '2019-8-10',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '泰州市海陵区',
+          value: {
+            name: '泰州市人民医院',
+            number: '168',
+            out: {
+              type: '组织',
+              number: '168',
+              time: '2019-6-18',
+              state: 'out'
+            },
+            in: {
+              type: '组织',
+              number: 0,
+              time: '2019-6-18',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '天津市和平区新兴街道',
+          value: {
+            name: '天津医科大学公卫学院',
+            number: '6283',
+            out: {
+              type: '细胞',
+              number: 0,
+              time: '2019-8-8',
+              state: 'out'
+            },
+            in: {
+              type: '细胞',
+              number: '6283',
+              time: '2019-8-8',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '天津市西青区',
+          value: {
+            name: '天津医科大学眼科医院',
+            number: '628',
+            out: {
+              type: '眼液',
+              number: 0,
+              time: '2019-7-15',
+              state: 'out'
+            },
+            in: {
+              type: '眼液',
+              number: '628',
+              time: '2019-7-15',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '天津市和平区兰州道',
+          value: {
+            name: '天津医科大学总医院',
+            number: '268',
+            out: {
+              type: '脑脊液',
+              number: 0,
+              time: '2019-7-21',
+              state: 'out'
+            },
+            in: {
+              type: '脑脊液',
+              number: '268',
+              time: '2019-7-21',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '武汉市武昌区',
+          value: {
+            name: '武汉大学人民医院',
+            number: '3211',
+            out: {
+              type: '全血',
+              number: '3211',
+              time: '2019-8-28',
+              state: 'out'
+            },
+            in: {
+              type: '全血',
+              number: 0,
+              time: '2019-8-28',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '武汉市江岸区',
+          value: {
+            name: '武汉市妇幼保健院',
+            number: '2612',
+            out: {
+              type: '血浆',
+              number: '2612',
+              time: '2019-8-22',
+              state: 'out'
+            },
+            in: {
+              type: '血浆',
+              number: 0,
+              time: '2019-8-22',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '西安市雁塔区',
+          value: {
+            name: '西安交大第一附属医院',
+            number: '4122',
+            out: {
+              type: '组织',
+              number: 0,
+              time: '2019-8-18',
+              state: 'out'
+            },
+            in: {
+              type: '组织',
+              number: '4122',
+              time: '2019-8-18',
+              state: 'in'
+            }
+          }
+        },
+        {
+          name: '海口市龙华区',
+          value: {
+            name: '海南医学院',
+            number: '3288',
+            out: {
+              type: '尿液',
+              number: 0,
+              time: '2019-9-20',
+              state: 'out'
+            },
+            in: {
+              type: '尿液',
+              number: '3288',
+              time: '2019-9-20',
+              state: 'in'
+            }
+          }
         }
-      ]
-      var geoCoordMap = {
+      ],
+      geoCoordMap: {
+        '海口市龙华区': [110.3406270000, 19.9878440000],
+        '西安市雁塔区': [108.9432630000, 34.2258640000],
+        '武汉市江岸区': [114.2945750000, 30.6082270000],
+        '武汉市武昌区': [114.3059530000, 30.5408790000],
+        '天津市和平区兰州道': [117.1928960000, 39.1235200000],
+        '天津市西青区': [117.1277060000, 39.1036090000],
+        '天津市和平区新兴街道': [117.1898360000, 39.1116600000],
+        '泰州市海陵区': [119.9422120000, 32.4445450000],
+        '上海市杨浦区': [121.5241110000, 31.2790990000],
+        '上海市长宁区': [121.4331960000, 31.2194950000],
+        '上海市徐汇区': [121.4288960000, 31.1852930000],
+        '济南市历下区趵突泉街道': [117.0253470000, 36.6554550000],
+        '济南市槐荫区': [116.9904390000, 36.6633880000],
+        '济南市历下区龙洞街道': [117.1280880000, 36.6689900000],
+        '济南市历下区': [117.0254190000, 36.6625930000],
+        '宁波市海曙区': [121.5504347818, 29.8881942443],
+        '呼和浩特市赛罕区': [111.7027094276, 40.8149209719],
+        '南京市玄武区': [118.7911006259, 32.0678210741],
+        '广州市海珠区': [113.3235400000, 23.0889810000],
+        '广州市从化区': [113.5935880000, 23.5539850000],
+        '广州市天河区': [113.3685290786, 23.1304029041],
         '海门': [121.15, 31.89],
         '鄂尔多斯': [109.781327, 39.608266],
         '招远': [120.38, 37.35],
@@ -1005,8 +668,246 @@ export default {
         '合肥': [117.27, 31.86],
         '武汉': [114.31, 30.52],
         '大庆': [125.03, 46.58]
-      }
+      },
+      inOutWarehouse2: [
+        {
+          name: '广东',
+          value: 11700,
+          list: [
+            {
+              company: '南方医学大学附属第三医院器官衰竭中心',
+              type: '血液',
+              number: '5000',
+              time: '2019-8-12',
+              state: 'out'
+            },
+            {
+              company: '南方医科大学附属南方医院',
+              type: '组织',
+              number: '3500',
+              time: '2019-8-16',
+              state: 'in'
+            },
+            {
+              company: '南方医科发现中西医结合医院',
+              type: '全血',
+              number: '3200',
+              time: '2019-9-10',
+              state: 'out'
+            }
+          ]
+        },
+        {
+          name: '江苏',
+          value: 3266,
+          list: [
+            {
+              company: '南京口腔医院',
+              type: '尿液',
+              number: '3266',
+              time: '2019-8-16',
+              state: 'out'
+            }
+          ]
+        },
+        {
+          name: '内蒙古',
+          value: 1288,
+          list: [
+            {
+              company: '内蒙古肿瘤医院',
+              type: '血清',
+              number: '1288',
+              time: '2019-8-25',
+              state: 'in'
+            }
+          ]
+        },
+        {
+          name: '浙江',
+          value: 3268,
+          list: [
+            {
+              company: '宁波第二人民医院',
+              type: '血液',
+              number: '3268',
+              time: '2019-6-8',
+              state: 'in'
+            }
+          ]
+        },
+        {
+          name: '山东',
+          value: 11418,
+          list: [
+            {
+              company: '山东大学齐鲁医院',
+              type: '组织',
+              number: '6211',
+              time: '2019-7-9',
+              state: 'in'
+            },
+            {
+              company: '山东省立医院东院',
+              type: '细胞',
+              number: '2625',
+              time: '2019-8-15',
+              state: 'out'
+            },
+            {
+              company: '山东省立医院内分泌',
+              type: '唾液',
+              number: '1326',
+              time: '2019-7-7',
+              state: 'out'
+            },
+            {
+              company: '山东省医学科学院内分泌研究所',
+              type: '痰液',
+              number: '1088',
+              time: '2019-5-15',
+              state: 'out'
+            },
+            {
+              company: '泰州市人民医院',
+              type: '组织',
+              number: '168',
+              time: '2019-6-18',
+              state: 'out'
+            }
+          ]
+        },
+        {
+          name: '上海',
+          value: 9266,
+          list: [
+            {
+              company: '上海第六人民医院',
+              type: '细胞',
+              number: '2367',
+              time: '2019-5-20',
+              state: 'in'
+            },
+            {
+              company: '上海皮肤病医院',
+              type: '皮肤鳞屑',
+              number: '1688',
+              time: '2019-6-12',
+              state: 'in'
+            },
+            {
+              company: '上海新华医院',
+              type: '全血',
+              number: '5211',
+              time: '2019-8-10',
+              state: 'out'
+            }
+          ]
+        },
+        {
+          name: '天津',
+          value: 7179,
+          list: [
+            {
+              company: '天津医科大学公卫学院',
+              type: '细胞',
+              number: '6283',
+              time: '2019-8-8',
+              state: 'in'
+            },
+            {
+              company: '天津医科大学眼科医院',
+              type: '眼液',
+              number: '628',
+              time: '2019-7-15',
+              state: 'in'
+            },
+            {
+              company: '天津医科大学总医院',
+              type: '脑脊液',
+              number: '268',
+              time: '2019-7-21',
+              state: 'in'
+            }
+          ]
+        },
+        {
+          name: '陕西',
+          value: 4122,
+          list: [
+            {
+              company: '西安交大第一附属医院',
+              type: '组织',
+              number: '4122',
+              time: '2019-8-18',
+              state: 'in'
+            }
+          ]
+        },
+        {
+          name: '海南',
+          value: 3288,
+          list: [
+            {
+              company: '海南医学院',
+              type: '尿液',
+              number: '3288',
+              time: '2019-9-20',
+              state: 'in'
+            }
+          ]
+        },
+        {
+          name: '湖北',
+          value: 5823,
+          list: [
+            {
+              company: '武汉大学人民医院',
+              type: '全血',
+              number: '3211',
+              time: '2019-8-28',
+              state: 'out'
+            },
+            {
+              company: '武汉市妇幼保健院',
+              type: '血浆',
+              number: '2612',
+              time: '2019-8-22',
+              state: 'out'
+            }
+          ]
+        }
 
+      ]
+    }
+  },
+  mounted () {
+    var _this = this
+    // var index = 0
+    this.$nextTick(function () {
+      _this.geEcharts()
+    })
+    // _this.show('a', 2)
+    // this.refInOut = window.setTimeout(function () {
+    //   _this.show('a', 2)
+    // }, 5000)
+    window.setTimeout(function () {
+      _this.geEcharts()
+    }, 10000)
+    // this.refInOut = window.setInterval(_this.show('a', 2), 5000)
+    // this.refInOut = window.setTimeout(_this.geEcharts(), 10000)
+  },
+  beforeDestroy () {
+    clearInterval(this.refInOut)
+    this.refInOut = null
+  },
+  methods: {
+    activeItem (item, index) {
+      this.show(item, index)
+    },
+    geEcharts (showData) {
+      var data = this.inOutWarehouse
+      var geoCoordMap = this.geoCoordMap
       var convertData = function (data) {
         var res = []
         for (var i = 0; i < data.length; i++) {
@@ -1022,24 +923,53 @@ export default {
       }
       var series = []
       series = [
-
+        {
+          type: 'map',
+          map: 'china',
+          geoIndex: 0,
+          aspectScale: 0.75, // 长宽比
+          showLegendSymbol: false, // 存在legend时显示
+          label: {
+            normal: {
+              show: true
+            },
+            emphasis: {
+              show: false,
+              textStyle: {
+                color: '#fff'
+              }
+            }
+          },
+          roam: true,
+          itemStyle: {
+            normal: {
+              areaColor: '#031525',
+              borderColor: '#1180c7'
+            },
+            emphasis: {
+              areaColor: '#2B91B7'
+            }
+          },
+          animation: false,
+          data: this.inOutWarehouse2
+        },
         {
           name: '城市',
           type: 'scatter',
           coordinateSystem: 'geo',
           data: convertData(data),
           symbolSize: function (val) {
-            return val[2] / 20
+            return 10
           },
           label: {
             normal: {
               formatter: function (params) {
                 // console.log(params.data.value)
-                let res = '{fline|样本数量：' + params.data.value[2] + '  ' + params.data.value[2] + '}\n{tline|' + params.data.value[2] + '}'
+                let res = '{fline|' + params.data.value[2].name + '  ' + '样本数量：' + params.data.value[2].number + '份}\n{tline|' + params.data.value[2].in.type + ' 入库 ' + params.data.value[2].in.number + '份}\n{tline|' + params.data.value[2].out.type + ' 出库 ' + params.data.value[2].out.number + '份}'
                 return res
               },
               position: 'top',
-              backgroundColor: 'rgba(8,186,236,.9)',
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
               padding: [0, 0],
               borderRadius: 3,
               lineHeight: 32,
@@ -1048,10 +978,12 @@ export default {
                 fline: {
                   padding: [0, 10, 10, 10],
                   color: '#ffffff',
-                  fontSize: '16'
+                  fontSize: '16',
+                  lineHeight: 30
                 },
                 tline: {
-                  padding: [10, 10, 0, 10],
+                  padding: [0, 10, 0, 10],
+                  lineHeight: 20,
                   color: '#ffffff'
                 }
               },
@@ -1066,63 +998,6 @@ export default {
               color: '#ddb926'
             }
           }
-        },
-        {
-          name: '前5',
-          label: {
-            normal: {
-              formatter: function (params) {
-                return '{fline|客户：' + params.data.username + '  ' + params.data.telphone + '}\n{tline|' + params.data.address + '}'
-              },
-              position: 'top',
-              backgroundColor: 'rgba(254,174,33,.8)',
-              padding: [0, 0],
-              borderRadius: 3,
-              lineHeight: 32,
-              color: '#f7fafb',
-              rich: {
-                fline: {
-                  padding: [0, 10, 10, 10],
-                  color: '#ffffff'
-                },
-                tline: {
-                  padding: [10, 10, 0, 10],
-                  color: '#ffffff'
-                }
-              }
-            },
-            emphasis: {
-              show: true
-            }
-          },
-          type: 'effectScatter',
-          coordinateSystem: 'geo',
-          data: convertData(data.sort(function (a, b) {
-            return b.value - a.value
-          }).slice(0, 9)),
-          symbolSize: function (val) {
-            return val[2] / 20
-          },
-          showEffectOn: 'render',
-          rippleEffect: {
-            brushType: 'stroke'
-          },
-          hoverAnimation: true,
-          // label: {
-          //     normal: {
-          //         formatter: '{b}',
-          //         position: 'right',
-          //         show: true
-          //     }
-          // },
-          itemStyle: {
-            normal: {
-              color: '#f4e925',
-              shadowBlur: 10,
-              shadowColor: '#333'
-            }
-          },
-          zlevel: 1
         }
       ]
       // console.log(111, convertData(data))
@@ -1131,21 +1006,21 @@ export default {
         series.push(
           {
             name: '城市',
-            type: 'scatter',
+            type: 'effectScatter',
             coordinateSystem: 'geo',
             data: showData,
             symbolSize: function (val) {
-              return val[2] / 20
+              return 10
             },
             label: {
               normal: {
                 formatter: function (params) {
-                  console.log(params.data.value)
-                  let res = '{fline|样本数量：' + params.data.value[2] + '  ' + params.data.value[2] + '}\n{tline|' + params.data.value[2] + '}'
+                  console.log(321, params)
+                  let res = '{fline|' + params.data.value[2].value.name + '  ' + '样本数量：' + params.data.value[2].value.number + '份}\n{tline|' + params.data.value[2].value.in.type + '入库' + params.data.value[2].value.in.number + '份}\n{tline|' + params.data.value[2].value.out.type + '出库' + params.data.value[2].value.out.number + '份}'
                   return res
                 },
                 position: 'top',
-                backgroundColor: 'rgba(8,186,236,.9)',
+                backgroundColor: 'rgba(50, 50, 50, 0.7)',
                 padding: [0, 0],
                 borderRadius: 3,
                 lineHeight: 32,
@@ -1154,10 +1029,12 @@ export default {
                   fline: {
                     padding: [0, 10, 10, 10],
                     color: '#ffffff',
-                    fontSize: '16'
+                    fontSize: '16',
+                    lineHeight: 30
                   },
                   tline: {
-                    padding: [10, 10, 0, 10],
+                    padding: [0, 10, 0, 10],
+                    lineHeight: 20,
                     color: '#ffffff'
                   }
                 },
@@ -1183,10 +1060,24 @@ export default {
             color: '#ccc'
           }
         },
+        backgroundColor: '#f7f8fa', // 地图背景色
+        visualMap: {
+          show: false,
+          min: 0,
+          max: 10000,
+          left: 100,
+          bottom: 30,
+          calculable: true,
+          // seriesIndex: [0],
+          inRange: {
+            // color: ['#DAE8FF', '#1AA3EB', '#35CFC9', '#FFEC3E', '#FFC53D', '#FA541C']
+            color: ['#B2F6FF', '#928DD9']
+          }
+        },
         geo: {
           map: 'china',
           show: true,
-          roam: true,
+          roam: false, // 是否允许缩放
           label: {
             emphasis: {
               show: false
@@ -1194,24 +1085,74 @@ export default {
           },
           itemStyle: {
             normal: {
-              areaColor: '#323C48',
-              borderColor: '#252C32',
-              shadowColor: '#e0dd85',
-              shadowBlur: 20
+              color: '#DAE8FF', // 地图背景色
+              borderColor: '#6cb0e0', // 省市边界线00fcff 516a89
+              borderWidth: 1
+            },
+            emphasis: {
+              color: '#828DD9', // 鼠标悬浮背景
+              borderColor: '#6cb0e0'
             }
-          }
+          },
+          data: [{
+            name: '安徽',
+            value: 5369 }]
+          // itemStyle: {
+          //   normal: {
+          //     areaColor: '#323C48',
+          //     borderColor: '#252C32',
+          //     shadowColor: '#e0dd85',
+          //     shadowBlur: 20
+          //   }
+          // }
         },
         series: series
       }
       console.log(222, series)
       const mycharts = this.$echarts.init(document.getElementById('mycharts'))
       mycharts.setOption(option, true)
+      setTimeout(function () {
+        window.onresize = function () {
+          mycharts.resize()
+        }
+      }, 200)
     },
     show (item, index) {
       // debugger
       // let myChartpie = this.$echarts.init(document.getElementById('myCharts'))
       // const mycharts = this.$echarts.init(document.getElementById('mycharts'))
-      var showData = [{ name: '北京', value: [116.46, 39.92, { name: '北京', number: 888 }] }]
+      var geoCoordMap = this.geoCoordMap
+
+      var geoCoord = geoCoordMap[item.name]
+      var showData = [
+        {
+          name: item.name,
+          value:
+          [
+            ...geoCoord,
+            item
+            // {
+            //   name: '广州',
+            //   value: {
+            //     name: '南方医学大学附属第三医院器官衰竭中心',
+            //     number: 9876,
+            //     in: {
+            //       type: '血液',
+            //       number: '5000',
+            //       time: '2019-8-12',
+            //       state: 'out'
+            //     },
+            //     out: {
+            //       type: '血液',
+            //       number: '5000',
+            //       time: '2019-8-12',
+            //       state: 'out'
+            //     }
+            //   }
+            // }
+          ]
+        }
+      ]
       var _this = this
       this.$nextTick(function () {
         console.log(123)
@@ -1236,9 +1177,66 @@ export default {
 <style lang="scss" scoped>
 .home{
   height:100%;
+  .test-box{
+    height:100%;
+    display: flex;
+    .left-bottom{
+      width:30%;
+        // margin:15px 0 20px 20px;
+        .left-bottom-list-box{
+          position: relative;
+          height:100%;
+          overflow-y: auto
+        }
+        .left-bottom-list{
+          margin:10px 20px;
+          // height:40px;
+          display: flex;
+          align-items: center;
+          .left-img{
+            width:59px;
+            height:59px;
+            // border:1px solid #ccc;
+            .left-img-svg{
+              height:100%;
+              width:100%;
+            }
+          }
+          .right-con{
+            width:calc(100% - 59px);
+            display: flex;
+            flex-direction:column;
+            .right-con-one{
+              padding:3px 10px;
+              font-size:16px;
+              font-family:PingFangSC;
+              font-weight:500;
+              color:rgba(34,34,34,1);
+            }
+            .right-con-two{
+              padding:3px 10px;
+              font-size:14px;
+              font-family:PingFangSC;
+              font-weight:400;
+              color:rgba(34,34,34,1);
+            }
+            .right-con-three{
+              padding:3px 10px;
+              font-size:14px;
+              font-family:PingFangSC;
+              font-weight:400;
+              color:rgba(129,124,124,1);
+            }
+          }
+        }
+        .in-out-active{
+          background:#f2f2f2
+        }
+      }
+  }
   #mycharts{
-    height: 500px;
-    width:1000px;
+    height: 100%;
+    width:70%;
     margin: 0 auto
   }
 }
