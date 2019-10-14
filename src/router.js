@@ -50,6 +50,19 @@ export default new Router({
           component: () => import(/* webpackChunkName: "about" */ './views/aboutUs/index1.vue')
         }
       ]
+    },
+    {
+      path: '/monitor',
+      name: 'monitor',
+      redirect: '/monitor/echartsMap',
+      component: Layout,
+      children: [
+        {
+          path: 'echartsMap',
+          name: 'echartsMap',
+          component: () => import(/* webpackChunkName: "about" */ '@/views/monitor/echartsMap.vue')
+        }
+      ]
     }
   ]
 })
