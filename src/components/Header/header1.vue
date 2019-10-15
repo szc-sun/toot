@@ -17,7 +17,7 @@
     :router="true"
     >
     <el-menu-item index="/home">首页</el-menu-item>
-    <el-menu-item index="/monitor">地图</el-menu-item>
+    <el-menu-item index="/monitor/echartsMap">地图</el-menu-item>
     <el-submenu index="aboutUs">
       <template slot="title">品牌介绍</template>
       <el-menu-item index="/aboutUs/about1">品牌介绍1</el-menu-item>
