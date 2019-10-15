@@ -7,6 +7,8 @@
  <template>
  <div class="home">
    首页
+   <el-button @click="toA">跳转1</el-button>
+   <el-button @click="toA">跳转2</el-button>
  </div>
  </template>
 <script>
@@ -15,6 +17,13 @@ export default {
   data () {
     return {
 
+    }
+  },
+  methods: {
+    toA () {
+      this.$router.push({
+        path: '/aboutUs/about1'
+      })
     }
   }
 }

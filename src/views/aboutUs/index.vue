@@ -7,13 +7,14 @@
  <template>
  <div class="home">
    品牌介绍1
+   <input type="text" v-model="msg">
  </div>
  </template>
 <script>
 export default {
   data () {
     return {
-
+      msg: ''
     }
   }
 }
